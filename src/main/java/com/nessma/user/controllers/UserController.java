@@ -70,13 +70,12 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody AuthenticationRequest authentificationRequest) {
+	public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) {
 
 		try {
-
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-					authentificationRequest.getUsername(), authentificationRequest.getPassword()));
-			final UserDetails userDetails = userDetailsService.loadUserByUsername(authentificationRequest.getUsername());
+					authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+			final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 			final String token = jwtTokenUtil.generateToken(userDetails);
 			User user = userService.findOne(userDetails.getUsername());
 			return ResponseEntity
